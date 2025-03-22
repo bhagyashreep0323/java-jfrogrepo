@@ -1,0 +1,43 @@
+pipeline {
+    agent { 
+        label 'maven-agent' 
+    }
+    stages {
+        stage('Checkout-stage') {
+            steps {
+                git branch: 'main', url: 'https://github.com/bhagyashreep0323/java-jfrogrepo.git'
+                echo 'repo cloning'
+            }
+        }
+        stage('Build-stage') {
+            steps {
+                sh 'mvn clean package'
+                echo 'package distribution done'
+            }
+        }
+        stage('push-to-artifactory') {
+            steps {
+                script {
+                    // Upload to Artifactory
+                    rtServer (
+                        id: 'jfrog-repo',
+                        url: 'http://13.233.250.139:8081/artifactory',
+                        credentialsId: 'jfrog',
+                        timeout: 300
+                    )
+                    rtUpload (
+                        serverId: 'server-1',
+                        spec: '''{
+                            "files": [
+                                {
+                                    "pattern": "target/works-with-heroku-1.0.war",
+                                    "target": "maven/test1.war"
+                                }
+                            ]
+                        }'''
+                    )
+                }
+            }
+        }
+    }
+}

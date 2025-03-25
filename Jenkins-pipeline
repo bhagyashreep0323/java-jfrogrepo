@@ -21,7 +21,7 @@ pipeline {
                     // Upload to Artifactory
                     rtServer (
                         id: 'jfrog',
-                        url: 'http://13.233.250.139:8081/artifactory',
+                        url: 'http://13.232.172.228:8081/artifactory',
                         credentialsId: 'jfrog',
                         timeout: 300
                     )

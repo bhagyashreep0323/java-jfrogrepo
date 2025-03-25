@@ -20,13 +20,13 @@ pipeline {
                 script {
                     // Upload to Artifactory
                     rtServer (
-                        id: 'jfrog-repo',
+                        id: 'jfrog',
                         url: 'http://13.233.250.139:8081/artifactory',
                         credentialsId: 'jfrog',
                         timeout: 300
                     )
                     rtUpload (
-                        serverId: 'server-1',
+                        serverId: 'jfrog',
                         spec: '''{
                             "files": [
                                 {
